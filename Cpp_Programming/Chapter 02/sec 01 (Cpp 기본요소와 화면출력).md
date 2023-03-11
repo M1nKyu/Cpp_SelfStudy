@@ -31,7 +31,7 @@ int main()
 
 - `#include "filename"`
 	- `""`는 소스파일이 있는 디렉터리에서 헤더파일을 include하도록 전처리기에 지시
-	- 이와 같은 방법으로 자신이 작성한 헤더파일을 include함
+	- 이와 같은 방법으로 **자신이 작성한 헤더파일을 include함**
 
 - ==표준 라이브러리 헤더 파일==
 	```
@@ -53,11 +53,11 @@ std::cout << "Helloe\n";
 
 ## cout 객체
 - 스크린 장치와 연결된 C++ **표준 출력 스트림 객체(Standard Output Stream Object)**
-- `std::` 접두어는 `cout`의 이름공간(namespace)이 std임을 표시
+- `std::` 접두어는 `cout`의 [이름공간(namespace)](obsidian://open?vault=Obsidian%20Vault&file=Cpp_Programming%2FChapter%2002%2Fsec%2002%20(namespace%EC%99%80%20std))이 std임을 표시
 
 ## << 연산자
 - ==스트림 삽입 연산자(Stream Insertion operator)==로 불림
-- 오른쪽 피연산자를 왼쪽 스트림 객체에 삽입
+- 오른쪽 피연산자를 **왼쪽 스트림 객체**에 삽입
 
 - 여러개의 `<<`연산자를 사용하여 여러개의 데이터를 출력할 수 있다
 ```
@@ -69,7 +69,7 @@ std::cout << "Hello\n" << "안녕하세요.";
 1.\n 문자 이용
 std::cout << "Hello" << \'n';
 
-2. end1 조작자 사용
+2. endl 조작자 사용
 std::cout << "Hello" << std::endl; (소문자L)
 ```
 
