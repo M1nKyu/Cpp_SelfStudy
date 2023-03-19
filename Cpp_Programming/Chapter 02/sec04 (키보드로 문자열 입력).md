@@ -5,7 +5,7 @@
 
 # 첫번째 방법 : C - 스트링
 - 널 문자 (`'\0' 또는 0`)으로 끝나는 char 배열
-```
+```cpp
 /*
 name1은 문자열 "Grace"
 name2는 문자열이 아니다. 단순 문자 배열이다. '\0'이 없기 때문
@@ -15,7 +15,7 @@ char name2[5] = {'G', 'r', 'a', 'c', 'e'};
 ```
 - 문자열 리터럴을 직접 배열에 저장하여 문자열을 만들 수도 있음
 	- 배열의 크기는 문자수 보다 **최소한 1은 커야하며 많이커도 상관없음**
-```
+```cpp
 char name3[6] = "Grace"; 
 char name4[] = "Grace"; // 배열의 크기가 6으로 자동 설정
 char name5[10] = "Grace"; // 많이커도 상관 없음
@@ -29,20 +29,25 @@ char name5[10] = "Grace"; // 많이커도 상관 없음
 - C-스트링을 다루기 위해 C 프로그래밍에서의 `strcpy()`, `strcmp()`, `strlen()`등의 함수를 사용 가능
 	- 이때 `<cstring>` 헤더 파일을 include해야한다
 
-## cstring
-- 
+### C++에서 한글 비트수
+- 영어나 숫자는 한글자 당 1비트
+- 한글은 한 글자당 2비
+- 예시
+	- "C++" : 3비트, `최소 array[4]`
+	- "씨쁠쁠 " : 6비트, `최소 array[7]`
 
 # cin 문자열 입력
 - cin과 >>연산자를 이용하여 간단히 문자열을 입력받을 수 있다.
-	```
+	```cpp
 	char name[6]; // 5개의 문자로 구성된 문자열을 저장할 수 있는 char배열
 	cin >> name;
 	```
 - 위의 name[] 배열의 크기가 6이기 때문에 반드시 5개 이하의 문자만 입력할 수 있다
 	- 6개이상 입력하면 실행오류 발생
+- **공백없이 입력**하여야 정상적으로 입력된다
 
 ## 예제 2-4
-```
+```cpp
 #include <iostream>
 using namespace std;
 
@@ -58,7 +63,7 @@ int main()
 ```
 
 ## 예제 2-5
-```
+```cpp
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -173,7 +178,7 @@ int main()
 		- `cin.getline(address, 100);` 이런식으로 간소화할 수 있다
 
 ## 예제 2-6
-```
+```cpp
 #include <iostream>
 using namespace std;
 
@@ -194,4 +199,70 @@ int main()
 
 # 두번째 방법 : string 클래스 (선호)
 - **문자열의 크기에 제약이 없다**
-- 
+- **객체지향적이다**
+- **C-스트링 방식보다 문자열을 다루기 쉽다**
+- 다양한 멤버 함수와 연산자 제공
+
+## 예제 2-7
+```cpp
+#include <iostream>
+#include <string> // string 클래스를 사용하기 위한 헤더파일
+using namespace std;
+
+int main()
+{
+	string song("Falling in love with you"); //문자열 song
+	string elvis("Elvis Presley"); //문자열 elvis
+
+	string singer;
+
+	cout << song + "를 부른 가수는??";
+	cout << " (힌트 : 첫 글자는 " << elvis[0] << ")\n"; //[]연산자 사용
+
+	getline(cin, singer); // getline() <string>에 정의돼있음, cin.getline()아님.
+	if (singer == elvis) cout << "맞았습니다";
+	else cout << "틀렸습니다. 정답은 " + elvis + "입니다." << endl;
+}
+
+[출력]
+Falling in love with you를 부른 가수는?? (힌트 : 첫 글자는 E)
+Elon musk
+틀렸습니다. 정답은 Elvis Presley입니다.
+```
+### getline()
+- `<string>`에 저장되어 있음
+- string형에 문자열 저장시 사용
+```cpp
+#include <iostream>
+#include <string>
+
+int main()
+{
+   string str;
+    
+   getline(cin,str); // 표준입력방식으로 str에 문자열 끝까지 저장
+   getline(cin,str,s); // 표준입력방식으로 str에 's'까지 저장
+}
+```
+
+
+# Check Time (2)
+- ' . '이 입력될 때까지 도시의 이름을 문자열로 입력받아 `char city[21]`배열에 저장하는 `cin.getline()` 호출 코드를 작성. 
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() 
+{
+	char city[21];
+
+	cout << "도시의 이름이 무엇인가요? :";
+	cin.getline(city, 21, '.');
+
+	cout << "도시의 이름은 " << city << "입니다";
+}
+[출력]
+도시의 이름이 무엇인가요? :Pohang.
+도시의 이름은 Pohang입니다
+```
