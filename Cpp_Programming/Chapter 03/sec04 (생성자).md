@@ -149,3 +149,111 @@ class Point{
 	...
 };
 ```
+## 예제 3-5
+```cpp
+#include <iostream>
+using namespace std;
+
+class Point
+{
+	int x, y;
+public :
+	Point();
+	Point(int a, int b);
+	void show() {
+		cout << "(" << x << ", " << y << ")" << endl; }
+};
+
+Point::Point() : Point(0, 0) {} // 위임 생성자
+Point::Point(int a, int b) // 타겟 생성자
+{
+	x = a;
+	y = b;
+}
+int main()
+{
+	Point origin;
+	Point target(10, 20);
+	origin.show();
+	target.show();
+}
+```
+---
+# 생성자는 꼭 있어야 하는가
+- 예 
+- 클래스에 여러개의 새성자가 있다 해도, C++ 컴파일러는 생성자 중 반드시 하나를 호출
+- 생성자가 없는 클래스는 ==기본 생성자==를 만들어 삽입
+
+# 기본 생성자 (디폴트 생성자)
+- 클래스에 선언된 생성자가 없을때 컴파일러가 자동으로 생성하는 생성자
+- 매개변수가 없는 생성자이다
+```cpp
+class Circle{
+	Circle(); // 기본생성자
+};
+```
+
+## 기본 생성자가 자동으로 생성되는 경우
+- 클래스에 생성자가 없을때 `Circle donut` 코드를 실행한다면 기본생성자가 자동으로 삽입되어 문제없이 컴파일 된다.
+## 기본 생성자가 자동으로 생성되지 않는 경우
+- 생성자가 하나라도 선언돼있으면 기본생성자를 삽입하지 않는다
+- 만약 `Circle pizza(30);`코드는 `Circle (int r)` 생성자를 호출하는데
+	- `Circle donut;` 을 통해 객체를 생성하려는데 더이상 기본생성자가 생성되지 않아 컴파일 오류를 발생시킨다
+```cpp
+class Circle
+{
+public:
+	int radius;
+	double getArea();
+	Circle(int r); // 생성자가 선언돼있기 때문에 컴파일러는 기본 생성자를 생성하지 않음
+};
+Circle::Circle(int r)
+{
+	radius = r;
+}
+int main()
+{
+	Circle pizza(30);
+	Circle donut; // 컴파일 오류, 기본 생성자가 없기 때문
+}
+```
+## 예제 3-6
+```cpp
+#include <iostream>
+using namespace std;
+
+class Rectangle
+{
+public:
+	int width;
+	int height;
+	Rectangle();
+	Rectangle(int a);
+	Rectangle(int a, int b);
+	bool isSquare();
+};
+
+Rectangle::Rectangle() : Rectangle(1, 1) {}
+Rectangle::Rectangle(int a) : Rectangle(a, a) {}
+Rectangle::Rectangle(int a, int b)
+{
+	width = a;
+	height = b;
+}
+
+bool Rectangle::isSquare()
+{
+	return width == height;
+}
+
+int main()
+{
+	Rectangle rect1;
+	Rectangle rect2(3, 5);
+	Rectangle rect3(3);
+
+	if (rect1.isSquare()) cout << "rect1은 정사각형이다." << endl;
+	if (rect2.isSquare()) cout << "rect2은 정사각형이다." << endl;
+	if (rect3.isSquare()) cout << "rect3은 정사각형이다." << endl;
+}
+```
