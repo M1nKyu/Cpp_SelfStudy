@@ -146,20 +146,20 @@ double Circle::getArea()
 	return 3.14 * radius * radius;
 }
 
-//전역변수
+//전역변수,(전역객체)
 Circle globalDonut(1000);
 Circle globalPizza(2000);
 
 void f()
 {
-	//지역변수
+	//지역변수,(지역객체)
 	Circle fDonut(100);
 	Circle fPizza(200);
 }
 
 int main()
 {
-	//main()함수의 지역변수
+	//main()함수의 지역변수,(지역객체)
 	Circle mainDonut;
 	Circle mainPizza(30);
 	f();
