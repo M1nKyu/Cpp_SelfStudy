@@ -28,7 +28,7 @@ int main()
 	
 	for (int i = 0; i < 3; i++)
 	{
-		cout << "Circle " << i << "의 면적은" << circleArray[i].getArea() << endl;
+		cout << "Circle " << i << "의 면적은 " << circleArray[i].getArea() << endl;
 	}
 
 	Circle* p;
@@ -40,9 +40,9 @@ int main()
 	}
 }
 [출력]
-Circle 0의 면적은314
-Circle 1의 면적은1256
-Circle 2의 면적은2826
+Circle 0의 면적은 314
+Circle 1의 면적은 1256
+Circle 2의 면적은 2826
 Circle 0의 면적은 314
 Circle 1의 면적은 1256
 Circle 2의 면적은 2826
@@ -60,7 +60,7 @@ Circle circleArray[3];
 
 #### 주의점
 - 아무 생성자도 선언되지 않은 경우, 컴파일러가 자동으로 생성하지만, 
-	- 매개변수를 가진 생성자만 선언돼있는 경우, 기본생성자는 자동으로 생성되지 않아 오류
+	- **매개변수를 가진 생성자만 선언돼있는 경우, 기본생성자는 자동으로 생성되지 않아**오류
 ```cpp
 class Circle{
 	int radius;
@@ -132,4 +132,105 @@ for(int i = 0; i < 3; i++)
 Circle *p = circleArray;
 for(int i = 0; i < 3; i++)
 	cout << (p + i)->getArea();
+```
+---
+# 객체 배열 초기화
+- 객체 베열을 생성할 때, **생성자를 사용하여 원소 객체를 초기화**할 수 있다
+	- `Circle circleArray[3] = { Circle(10), Circle(20), Circle() };`
+		- Circle(10)은 Circle(int r)생성자 호출
+		- Circle()는 기본 생성자의 호출 
+
+## 예제 4-3
+```cpp
+#include <iostream>
+using namespace std;
+
+class Circle{
+public:
+	Circle() { radius = 1; }
+	Circle(int r) { radius = r; }
+	void setRadius(int r) { radius = r; }
+	double getArea();
+};
+
+double Circle::getArea(){
+	return 3.14 * radius * radius;
+}
+
+int main(){
+	Circle circleArray[3] = { Circle(10), Circle(20), Circle() };
+	for(int i = 0; i < 3; i++)
+		cout << "Circle " << i << "의 면적은 " << circleArray[i].getArea() << endl;
+}
+
+[출력]
+Circle 0의 면적은 314
+Circle 1의 면적은 1256
+Circle 2의 면적은 3.14
+```
+---
+# 다차원 객체 배열
+- C++ 은 2, 3차원 등 다차원 객체 배열을 만들 수 있다
+	- `Circle circles[2][3];`
+
+- 일차원 배열과 동일하게, 각 원소의 객체가 생성될 때 기본 생성자를 호출
+- 다음과 같이 객체의 변수 값을 초기화할 수 있다.
+```cpp
+circles[0][0] = setRadius(1);
+circles[0][1] = setRadius(2);
+circles[0][2] = setRadius(3);
+circles[0][0] = setRadius(4);
+circles[1][1] = setRadius(5);
+circles[1][2] = setRadius(6);
+```
+
+- { }안에 생성자를 지정하여 배열을 초기화할 수 있다
+```cpp
+Circle circles[2][3] = {{ Circle(1), Circle(2), Circle(3) }, {Circle(4), Circle(5), Circle() }};
+```
+
+## 예제 4-4
+```cpp
+#include <iostream>
+using namespace std;
+
+class Circle
+{
+	int radius;
+public:
+	Circle() { radius = 1; }
+	Circle(int r) { radius = r; }
+	void setRadius(int r) { radius = r; }
+	double getArea();
+};
+double Circle::getArea()
+{
+	return 3.14 * radius * radius;
+}
+int main()
+{
+	Circle circles[2][3];
+	circles[0][0].setRadius(1);
+	circles[0][1].setRadius(2);
+	circles[0][2].setRadius(3);
+	circles[1][0].setRadius(4);
+	circles[1][1].setRadius(5);
+	circles[1][2].setRadius(6);
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << "Circle [" << i << "," << j << "]의 면적은 ";
+			cout << circles[i][j].getArea() << endl;
+		}
+	}
+}
+[출략]
+Circle [0,0]의 면적은 3.14
+Circle [0,1]의 면적은 12.56
+Circle [0,2]의 면적은 28.26
+Circle [1,0]의 면적은 50.24
+Circle [1,1]의 면적은 78.5
+Circle [1,2]의 면적은 113.04
 ```
