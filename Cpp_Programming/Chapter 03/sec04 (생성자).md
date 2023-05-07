@@ -6,11 +6,11 @@ class Circle
 	......
 	/* 두개의 생성자 함수 선언 */
 	Circle(); // 클래스 이름과 동일
-	Circle(int r); // 리턴 타입을 명기하지 않음, void조차없음
+	Circle(int r); // ❗리턴 타입을 명기하지 않음, void조차없음
 };
 
 /* 생성자 함수 구현 */
-//매개변수가 없는 생 성자
+//매개변수가 없는 생성자
 Circle::Circle() 
 {
 	......
@@ -23,11 +23,12 @@ Circle::Circle(int r)
 ```
 - 생성자의 목적
 	- 객체가 생성될 때 필요한 초기 작업을 위함
+		- 객체가 생성되는 시점에서 자동으로 호출됨
 
-- 생성자 함수는 오직 한번만 실행됨
-	- 객체가 생성되는 시점에 오직 한번만 자동으로 실행
+- ❗생성자 함수는 오직 한번만 실행됨
+	- *객체가 생성되는 시점에 오직 한번만 자동으로 실행*
 
-- 생성자는 메모리에 자리잡을 때 수행이 된다
+- 생성자는 *메모리에 자리잡을 때* 수행이 된다
 	- ex ) main함수에서 `Circle donut;` 한줄이 수행되면 donut이라는 변수명으로 메모리에 Circle 클래스가 자리잡음. 그 순간 자동으로 생성자 수행
 		- 클래스가 메모리에 자리잡으면 그 때부터 객체(object)라고 부른다
 			- donut을 객체변수라고 부른다
@@ -36,12 +37,38 @@ Circle::Circle(int r)
 
 - 생성자 함수의 원형에 **리턴타입을 선언하지 않는다**
 	- 생성자앞에 `void`, `int` 등 리턴타입을 선언하지 않는다
-	- 또, `return;`을 통해 함수 실행을 종료할 수는 있지만, 어떤 값도 리턴하면 안된다.
-
-
+	- 또, `return;`을 통해 함수 실행을 종료할 수는 있지만, 
+		- ❗**어떤 값도 리턴하면 안된다.**❗
 
 - 생성자는 중복 가능하다
 	- 매개 변수 개수나 타입이 서로 다르게 생성
+
+## ❗오류찾기❗
+```cpp
+#inculde <ostream> // 1. iostream으로 수정
+use namespace std // 2. using 으로 수정
+/* 클래스 선언부 */
+Class Rectangle 
+{ 
+public // 3. public: 으로 수정
+	int width;
+	int height;
+	int getArea() { } // 4. 중괄호 안에 구현을 하던가, getArea(); 원형만 선언하던가 해야함
+}
+/* 클래스 구현부 */
+Rectangle::getArea  // 5. 리턴타입 int 명시, 6. getArea() 로 수정
+{ 
+	return width+height; // 7. 곱해야 면적인데 + 라고 씀
+}
+ /* main함수에는 오류 없어요 */
+int main() 
+{
+	Rectangle rect;
+	rect.width = 3;
+	rect.height = 5;
+	cout << "사각형의 면적은 " << rect.getArea() << endl;
+}
+```
 ---
 # 객체 생성과 생성자 실행
 ## 예제 3-3
@@ -85,7 +112,7 @@ int main()
 	area = pizza.getArea();
 	cout << "pizza 면적은 " << area << endl;
 }
-/
+
 [출력]
 반지름 1 원 생성
 donut 면적은 3.14
@@ -95,7 +122,7 @@ pizza 면적은 2826
 - 객체의 생성과정
 	- 객체 크기의 공간을 할당한 후, 객체 내의 생성자 함수가 실행됨
 ---
-# 위임 생성자(delegating constructor)
+# ❗위임 생성자(delegating constructor)
 - **생성자가 다른 생성자 호출**
 ```cpp
 Circle::Circle(){
@@ -109,18 +136,18 @@ Circle::Circle(int r){
 ```
 - 위에서 비슷한 2개의 코드가 중복된다. 이를 아래처럼 간소화 한다
 ```cpp
-Circle::Circle() : Circle(1){} // Circle(int r)의 생성자 호출
+Circle::Circle() : Circle(1){} // Circle(int r)의 생성자 호출(빈 중괄호)
 
 Circle::Circle(int r){
 	radius = r;
 	cout << "반지름 " << radius << " 원 생성" << endl;
 }
 ```
-- `Circle()`는 객체의 초기화를 다른 생성자에 위임한다고 해서 ==위임 생성재==
+- `Circle()`는 객체의 초기화를 다른 생성자에 위임한다고 해서 ==위임 생성자==
 - `Circle(int r)` 는 ==타겟 생성자==라고 부름
 ---
 # 생성자와 멤버 변수 초기화
-## 생성자 코드에서 멤버 변수 초기화
+## 생성자 코드에서 멤버 변수 초기화 (일반적)
 ```cpp
 class Point
 {
@@ -132,22 +159,20 @@ public:
 Point::Point() { x = 0; y = 0;}
 Point::Point(int a, int b) { x = a; y = b;}
 ```
-## 생성자 서두에 초깃값으로 초기화
+## ❗생성자 서두에 초깃값으로 초기화
 ```cpp
-Point::Point() : x(0), y(0){ // 멤버 변수 x, y를 0으로 초기화
-}
+Point::Point() : x(0), y(0) {} // 멤버 변수 x, y를 0으로 초기화
+
 Point::Point(int a, int b) // 멤버 변수 x=a로, y=b로 초기화
-	: x(a), y(b){ // 콜론(:) 이하 부분을 다음 줄에 써도 됨
-}
+	: x(a), y(b) {} // 콜론(:) 이하 부분을 다음 줄에 써도 됨
 ```
 또는
 ```cpp
 Point::Point(int a)
-	: x(a), y(0) { // 멤버 변수 x=a, y=0으로 초기화
-}
+	: x(a), y(0) {} // 멤버 변수 x=a, y=0으로 초기화
+
 Point::Point(int a)
-	: x(100+a), y(100) { // 멤버 변수 x=100+a, y=100으로 초기화
-}
+	: x(100+a), y(100) {} // 멤버 변수 x=100+a, y=100으로 초기화
 ```
 ## 클래스 선언부에서 직접 초기화
 ```cpp
@@ -156,6 +181,7 @@ class Point{
 	...
 };
 ```
+---
 ## 예제 3-5
 ```cpp
 #include <iostream>
@@ -188,9 +214,9 @@ int main()
 ---
 # 생성자는 꼭 있어야 하는가
 - 예 
-- 클래스에 여러개의 새성자가 있다 해도, C++ 컴파일러는 생성자 중 반드시 하나를 호출
+- 클래스에 여러개의 생성자가 있다 해도, C++ 컴파일러는 생성자 중 반드시 하나를 호출
 - 생성자가 없는 클래스는 ==기본 생성자==를 만들어 삽입
-
+---
 # 기본 생성자 (디폴트 생성자)
 - 클래스에 선언된 생성자가 없을때 컴파일러가 자동으로 생성하는 생성자
 - 매개변수가 없는 생성자이다
@@ -199,7 +225,6 @@ class Circle{
 	Circle(); // 기본생성자
 };
 ```
-
 ## 기본 생성자가 자동으로 생성되는 경우
 - 클래스에 생성자가 없을때 `Circle donut` 코드를 실행한다면 기본생성자가 자동으로 삽입되어 문제없이 컴파일 된다.
 ## 기본 생성자가 자동으로 생성되지 않는 경우
@@ -232,15 +257,16 @@ using namespace std;
 class Rectangle
 {
 public:
-	int width;
-	int height;
-	Rectangle();
-	Rectangle(int a);
-	Rectangle(int a, int b);
+	int width; //너비
+	int height; //높이
+	Rectangle(); //생성자
+	Rectangle(int a); //생성자
+	Rectangle(int a, int b); //생성자
 	bool isSquare();
 };
-
-Rectangle::Rectangle() : Rectangle(1, 1) {}
+// 바로 아래줄 코드는 Rectangle(1){}도 가능
+//Rectangle() { width = height = 1; }도 가능
+Rectangle::Rectangle() : Rectangle(1, 1) {} 
 Rectangle::Rectangle(int a) : Rectangle(a, a) {}
 Rectangle::Rectangle(int a, int b)
 {
